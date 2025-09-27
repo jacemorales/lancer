@@ -1,0 +1,275 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Enums for status fields
+enum UserRole {
+  freelancer
+  client
+}
+
+enum JobBudgetType {
+  fixed
+  hourly
+}
+
+enum JobStatus {
+  open
+  in_progress
+  completed
+  cancelled
+}
+
+enum ProposalStatus {
+  pending
+  accepted
+  rejected
+}
+
+enum ContractStatus {
+  draft
+  active
+  in_progress
+  disputed
+  completed
+  closed
+}
+
+enum MilestoneStatus {
+  pending
+  funded
+  in_progress
+  submitted
+  approved
+  cancelled
+}
+
+enum TransactionType {
+  deposit
+  release
+  refund
+  fee
+  withdrawal
+}
+
+enum TransactionStatus {
+  pending
+  succeeded
+  failed
+}
+
+enum DisputeStatus {
+  open
+  under_review
+  resolved
+}
+
+enum KycStatus {
+  not_started
+  pending
+  verified
+  rejected
+}
+
+// Models
+model User {
+  id              String            @id @default(uuid()) @db.Uuid
+  email           String            @unique
+  passwordHash    String?
+  googleOauthId   String?           @unique
+  roles           UserRole[]
+  emailVerified   Boolean           @default(false)
+  kycStatus       KycStatus         @default(not_started)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  freelancerProfile FreelancerProfile?
+  clientProfile   ClientProfile?
+  jobs            Job[]
+  proposals       Proposal[]
+  sentContracts   Contract[]        @relation("ClientContracts")
+  receivedContracts Contract[]      @relation("FreelancerContracts")
+  transactions    Transaction[]
+  sentMessages    Message[]
+  reviewsGiven    Review[]          @relation("Reviewer")
+  reviewsReceived Review[]          @relation("Reviewee")
+  disputesRaised  Dispute[]
+}
+
+model FreelancerProfile {
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String   @unique @db.Uuid
+  headline     String?
+  bio          String?
+  skills       String[]
+  hourlyRateCents Int?
+  location     String?
+  resumeUrl    String?
+  portfolio    Json?
+  githubUrl    String?
+  linkedinUrl  String?
+  languages    String[]
+  education    Json?
+  workHistory  Json?
+  ratingAvg    Decimal  @default(0.00) @db.Decimal(3, 2)
+  completedJobs Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model ClientProfile {
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId           String   @unique @db.Uuid
+  companyName      String?
+  websiteUrl       String?
+  verifiedBusiness Boolean  @default(false)
+  totalSpentCents  BigInt   @default(0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Job {
+  id                  String     @id @default(uuid()) @db.Uuid
+  client              User       @relation(fields: [clientId], references: [id])
+  clientId            String     @db.Uuid
+  title               String
+  description         String
+  skills              String[]
+  category            String?
+  budgetType          JobBudgetType
+  budgetMinCents      Int?
+  budgetMaxCents      Int?
+  attachments         String[]
+  status              JobStatus  @default(open)
+  experienceLevel     String?
+  screeningQuestions  Json?
+  visibility          String     @default("public")
+  createdAt           DateTime   @default(now())
+  expiresAt           DateTime?
+  proposals           Proposal[]
+  contracts           Contract[]
+}
+
+model Proposal {
+  id                       String   @id @default(uuid()) @db.Uuid
+  job                      Job      @relation(fields: [jobId], references: [id])
+  jobId                    String   @db.Uuid
+  freelancer               User     @relation(fields: [freelancerId], references: [id])
+  freelancerId             String   @db.Uuid
+  coverLetter              String
+  resumeUrl                String?
+  attachments              String[]
+  proposedBudgetCents      Int?
+  proposedTimelineDays     Int?
+  screeningQuestionAnswers Json?
+  status                   ProposalStatus @default(pending)
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
+  contract                 Contract?
+
+  @@unique([jobId, freelancerId])
+}
+
+model Contract {
+  id                String          @id @default(uuid()) @db.Uuid
+  job               Job             @relation(fields: [jobId], references: [id])
+  jobId             String          @db.Uuid
+  proposal          Proposal        @relation(fields: [proposalId], references: [id])
+  proposalId        String          @unique @db.Uuid
+  client            User            @relation("ClientContracts", fields: [clientId], references: [id])
+  clientId          String          @db.Uuid
+  freelancer        User            @relation("FreelancerContracts", fields: [freelancerId], references: [id])
+  freelancerId      String          @db.Uuid
+  totalAmountCents  Int
+  escrowStatus      String?
+  status            ContractStatus  @default(draft)
+  createdAt         DateTime        @default(now())
+  startDate         DateTime?
+  endDate           DateTime?
+  milestones        Milestone[]
+  transactions      Transaction[]
+  messages          Message[]
+  reviews           Review[]
+  dispute           Dispute?
+}
+
+model Milestone {
+  id              String          @id @default(uuid()) @db.Uuid
+  contract        Contract        @relation(fields: [contractId], references: [id])
+  contractId      String          @db.Uuid
+  title           String
+  description     String?
+  amountCents     Int
+  dueDate         DateTime?
+  status          MilestoneStatus @default(pending)
+  deliverableUrls String[]
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  transactions    Transaction[]
+}
+
+model Transaction {
+  id                    String            @id @default(uuid()) @db.Uuid
+  contract              Contract?         @relation(fields: [contractId], references: [id])
+  contractId            String?           @db.Uuid
+  milestone             Milestone?        @relation(fields: [milestoneId], references: [id])
+  milestoneId           String?           @db.Uuid
+  user                  User              @relation(fields: [userId], references: [id])
+  userId                String            @db.Uuid
+  type                  TransactionType
+  amountCents           Int
+  feeCents              Int               @default(0)
+  providerTransactionId String            @unique
+  status                TransactionStatus
+  metadata              Json?
+  createdAt             DateTime          @default(now())
+}
+
+model Message {
+  id          String   @id @default(uuid()) @db.Uuid
+  contract    Contract @relation(fields: [contractId], references: [id])
+  contractId  String   @db.Uuid
+  sender      User     @relation(fields: [senderId], references: [id])
+  senderId    String   @db.Uuid
+  text        String?
+  attachments String[]
+  readAt      DateTime?
+  createdAt   DateTime @default(now())
+}
+
+model Review {
+  id          String   @id @default(uuid()) @db.Uuid
+  contract    Contract @relation(fields: [contractId], references: [id])
+  contractId  String   @db.Uuid
+  reviewer    User     @relation("Reviewer", fields: [reviewerId], references: [id])
+  reviewerId  String   @db.Uuid
+  reviewee    User     @relation("Reviewee", fields: [revieweeId], references: [id])
+  revieweeId  String   @db.Uuid
+  rating      Int
+  comment     String?
+  createdAt   DateTime @default(now())
+
+  @@unique([contractId, reviewerId])
+}
+
+model Dispute {
+  id                 String        @id @default(uuid()) @db.Uuid
+  contract           Contract      @relation(fields: [contractId], references: [id])
+  contractId         String        @unique @db.Uuid
+  raisedBy           User          @relation(fields: [raisedById], references: [id])
+  raisedById         String        @db.Uuid
+  reason             String
+  evidenceUrls       String[]
+  status             DisputeStatus @default(open)
+  resolutionNotes    String?
+  resolvedByAdminId  String?       @db.Uuid
+  createdAt          DateTime      @default(now())
+  resolvedAt         DateTime?
+}
