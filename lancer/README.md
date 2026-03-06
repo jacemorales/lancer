@@ -29,11 +29,11 @@ Deploy the backend to a platform like [Render](https://render.com/) or [Railway]
 
 Deploy the frontend to [Netlify](https://www.netlify.com/).
 
-1.  **Repository Settings:**
+1.  **Netlify Configuration:** A `netlify.toml` file has been added to the root of the repository. It automatically configures the following:
     *   **Base directory:** `lancer/web`
     *   **Build command:** `npm run build`
-    *   **Publish directory:** `.next` (for standard Next.js) or `out` (for static export).
-2.  **Redirects:** A `_redirects` file has been added to `lancer/web/public/` and `lancer/` to handle client-side routing and SPA behavior on Netlify.
+    *   **Publish directory:** `.next`
+2.  **Redirects & Routing:** Since this is a Next.js project, Netlify will automatically handle routing using its Next.js Runtime plugin. You **do not** need a manual `_redirects` file for standard routing.
 3.  **Environment Variables:**
     *   `NEXT_PUBLIC_API_URL`: The URL of your deployed Backend API.
 
@@ -42,7 +42,6 @@ Deploy the frontend to [Netlify](https://www.netlify.com/).
 Once both are deployed:
 1.  The **Frontend** communicates with the **Backend** via the `NEXT_PUBLIC_API_URL`.
 2.  The **Backend** communicates with the **Database** via the `DATABASE_URL`.
-3.  **Netlify Redirects:** Ensure that client-side routing works by having the `/* /index.html 200` rule in your `_redirects` file (already included).
 
 ## Local Development
 
