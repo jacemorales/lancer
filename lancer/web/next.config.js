@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Add any specific Next.js configuration here if needed
-  // For example, to enable static export:
-  // output: 'export',
+  output: 'export',
+  // Netlify handles trailing slashes differently, often better to disable for SPAs
+  trailingSlash: true,
 }
 
 module.exports = nextConfig
