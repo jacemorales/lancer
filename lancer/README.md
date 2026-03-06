@@ -33,8 +33,9 @@ Deploy the frontend to [Netlify](https://www.netlify.com/).
     *   **Base directory:** `lancer/web`
     *   **Build command:** `npm run build`
     *   **Publish directory:** `out`
-2.  **Static Export:** The project is configured for **Static HTML Export**. This is the most reliable way to host a Next.js App Router project on Netlify when it's in a subdirectory.
-3.  **Environment Variables:**
+2.  **Static Export:** The project is configured for **Static HTML Export**. This ensures that Tailwind CSS is correctly compiled and all files are linked to the appropriate URLs.
+3.  **Styling:** Tailwind CSS is used for styling. Ensure `postcss.config.js` is present (already added) for Tailwind to process correctly during the build.
+4.  **Environment Variables:**
     *   `NEXT_PUBLIC_API_URL`: The URL of your deployed Backend API.
 
 ### 4. How They Connect
