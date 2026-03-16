@@ -1,4 +1,4 @@
-# Lancer - Freelance Marketplace
+# WorkPlug - Freelance Marketplace
 
 This project is a full-stack freelance marketplace built with Next.js (Frontend) and NestJS (Backend).
 

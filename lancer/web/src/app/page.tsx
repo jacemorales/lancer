@@ -9,21 +9,21 @@ const HeroSection = () => (
   <section className="bg-blue-600 text-white py-20">
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <h1 className="text-4xl sm:text-5xl font-extrabold mb-6">
-        Find Your Next Developer Dream Job
+        Powering the Next Generation of African Talent
       </h1>
       <p className="text-xl mb-10 max-w-2xl mx-auto">
-        Lancer is the premier marketplace for top-tier developers and forward-thinking companies.
-        Build your future with world-class projects.
+        WorkPlug is the dedicated platform for <strong>students</strong> to kickstart their careers.
+        Our mission is to <strong>end unemployment in Africa within the next 10 years</strong> by connecting students with global opportunities.
       </p>
       <div className="flex flex-col sm:flex-row justify-center gap-4">
         <Link href="/jobs">
           <Button variant="secondary" className="w-full sm:w-auto text-blue-600 bg-white hover:bg-gray-100">
-            Browse Jobs
+            Find Student Gigs
           </Button>
         </Link>
         <Link href="/signup">
           <Button className="w-full sm:w-auto border-2 border-white hover:bg-blue-700">
-            Sign Up Now
+            Join the Movement
           </Button>
         </Link>
       </div>
@@ -36,11 +36,11 @@ const FeaturedJobs = () => (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex justify-between items-end mb-10">
         <div>
-          <h2 className="text-3xl font-bold text-gray-900">Featured Jobs</h2>
-          <p className="text-gray-600 mt-2">Latest opportunities from top companies</p>
+          <h2 className="text-3xl font-bold text-gray-900">Opportunities for You</h2>
+          <p className="text-gray-600 mt-2">Latest student-friendly projects from top companies</p>
         </div>
         <Link href="/jobs" className="text-blue-600 font-semibold hover:underline hidden sm:block">
-          View all jobs &rarr;
+          View all gigs &rarr;
         </Link>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -66,7 +66,7 @@ const FeaturedJobs = () => (
       </div>
       <div className="mt-10 text-center sm:hidden">
         <Link href="/jobs" className="text-blue-600 font-semibold hover:underline">
-          View all jobs &rarr;
+          View all gigs &rarr;
         </Link>
       </div>
     </div>
@@ -76,25 +76,25 @@ const FeaturedJobs = () => (
 const Features = () => (
   <section className="py-20">
     <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 className="text-3xl font-bold text-center text-gray-900 mb-16">Why Developers Choose Lancer</h2>
+      <h2 className="text-3xl font-bold text-center text-gray-900 mb-16">Why Students Choose WorkPlug</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
         <div className="text-center">
           <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
             <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04rem0 000 0z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5zm0 0l9-5-9-5-9 5 9 5zm0 0v6m0-6L3 9m18 0l-9 5" />
             </svg>
           </div>
-          <h3 className="text-xl font-bold mb-4">Verified Clients</h3>
-          <p className="text-gray-600">Work with companies that have been vetted for quality and payment reliability.</p>
+          <h3 className="text-xl font-bold mb-4">Student-First</h3>
+          <p className="text-gray-600">Gigs designed for student schedules and skill levels. Build your portfolio while you learn.</p>
         </div>
         <div className="text-center">
           <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
             <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <h3 className="text-xl font-bold mb-4">Secure Payments</h3>
-          <p className="text-gray-600">Our escrow system ensures you get paid for every milestone you complete.</p>
+          <h3 className="text-xl font-bold mb-4">Impact Africa</h3>
+          <p className="text-gray-600">Be part of the mission to transform the African economy and eliminate unemployment.</p>
         </div>
         <div className="text-center">
           <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -102,8 +102,8 @@ const Features = () => (
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
           </div>
-          <h3 className="text-xl font-bold mb-4">Fast Payouts</h3>
-          <p className="text-gray-600">No more waiting weeks for your money. Receive funds quickly once work is approved.</p>
+          <h3 className="text-xl font-bold mb-4">Earn While Learning</h3>
+          <p className="text-gray-600">Get paid fairly for your work. No more unpaid internships—your skills have value.</p>
         </div>
       </div>
     </div>
@@ -115,17 +115,17 @@ const Footer = () => (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex flex-col md:flex-row justify-between items-center">
         <div className="mb-8 md:mb-0">
-          <span className="text-2xl font-bold text-white">Lancer</span>
-          <p className="mt-2">The future of freelance development.</p>
+          <span className="text-2xl font-bold text-white">WorkPlug</span>
+          <p className="mt-2">Powering your hustle. Ending unemployment in Africa.</p>
         </div>
         <div className="flex gap-8">
-          <Link href="/jobs" className="hover:text-white transition-colors">Find Jobs</Link>
+          <Link href="/jobs" className="hover:text-white transition-colors">Find Gigs</Link>
           <Link href="/signup" className="hover:text-white transition-colors">Sign Up</Link>
           <Link href="/login" className="hover:text-white transition-colors">Log In</Link>
         </div>
       </div>
       <div className="mt-12 pt-8 border-t border-gray-800 text-center text-sm">
-        &copy; {new Date().getFullYear()} Lancer. All rights reserved.
+        &copy; {new Date().getFullYear()} WorkPlug. All rights reserved.
       </div>
     </div>
   </footer>
