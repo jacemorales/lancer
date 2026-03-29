@@ -5,12 +5,12 @@ import Card from '@/components/Card';
 import Button from '@/components/Button';
 import { mockJobs, Job } from '@/data/mockJobs';
 
-// This function can be used for static generation in a real app
-// export async function generateStaticParams() {
-//   return mockJobs.map((job) => ({
-//     id: job.id,
-//   }));
-// }
+// This function is required for static generation of dynamic routes
+export async function generateStaticParams() {
+  return mockJobs.map((job) => ({
+    id: job.id,
+  }));
+}
 
 const getJobById = (id: string): Job | undefined => {
   return mockJobs.find(job => job.id === id);

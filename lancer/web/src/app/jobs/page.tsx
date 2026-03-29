@@ -1,9 +1,11 @@
-import React from 'react';
+'use client';
+
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Card from '@/components/Card';
 import Button from '@/components/Button';
-import { mockJobs, Job } from '@/data/mockJobs';
+import { fetchJobs, Job } from '@/lib/googleSheets';
 
 const JobCard: React.FC<{ job: Job }> = ({ job }) => (
   <Card className="mb-4 hover:shadow-lg transition-shadow duration-200">
@@ -28,7 +30,7 @@ const JobCard: React.FC<{ job: Job }> = ({ job }) => (
       </div>
       <div className="mt-4 sm:mt-0 sm:ml-6 flex-shrink-0 flex flex-col items-start sm:items-end justify-between">
         <Link href={`/jobs/${job.id}`}>
-          <Button>View Job</Button>
+          <Button>View Gig</Button>
         </Link>
         <div className="mt-4 text-sm text-gray-600 text-left sm:text-right">
           <p className="font-semibold">{job.client.name}</p>
@@ -41,6 +43,12 @@ const JobCard: React.FC<{ job: Job }> = ({ job }) => (
 );
 
 const JobsPage: React.FC = () => {
+  const [jobs, setJobs] = useState<Job[]>([]);
+
+  useEffect(() => {
+    fetchJobs().then(setJobs);
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
@@ -55,9 +63,13 @@ const JobsPage: React.FC = () => {
             </Card>
           </aside>
           <div className="w-full lg:w-3/4">
-            {mockJobs.map(job => (
-              <JobCard key={job.id} job={job} />
-            ))}
+            {jobs.length > 0 ? (
+              jobs.map(job => (
+                <JobCard key={job.id} job={job} />
+              ))
+            ) : (
+              <p className="text-gray-500 text-center py-10">Loading gigs...</p>
+            )}
           </div>
         </div>
       </main>

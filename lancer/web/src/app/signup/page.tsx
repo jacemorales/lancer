@@ -40,8 +40,8 @@ const SignupPage: React.FC = () => {
                     <span className="ml-2 text-gray-700">Client, hiring for a project</span>
                   </label>
                   <label className="flex items-center">
-                    <input type="radio" name="role" value="freelancer" className="form-radio" />
-                    <span className="ml-2 text-gray-700">Freelancer, looking for work</span>
+                    <input type="radio" name="role" value="freeworkplug" className="form-radio" />
+                    <span className="ml-2 text-gray-700">Freeworkplug, looking for work</span>
                   </label>
                 </div>
               </div>
