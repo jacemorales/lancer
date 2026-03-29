@@ -1,9 +1,11 @@
-import React from 'react';
+'use client';
+
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Button from '@/components/Button';
 import Card from '@/components/Card';
-import { mockJobs } from '@/data/mockJobs';
+import { fetchJobs, Job } from '@/lib/googleSheets';
 
 const HeroSection = () => (
   <section className="bg-blue-600 text-white py-20">
@@ -31,7 +33,7 @@ const HeroSection = () => (
   </section>
 );
 
-const FeaturedJobs = () => (
+const FeaturedJobs = ({ jobs }: { jobs: Job[] }) => (
   <section className="py-20 bg-gray-50">
     <div className="container mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex justify-between items-end mb-10">
@@ -44,7 +46,7 @@ const FeaturedJobs = () => (
         </Link>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {mockJobs.slice(0, 4).map((job) => (
+        {jobs.slice(0, 4).map((job) => (
           <Card key={job.id} className="hover:shadow-lg transition-shadow duration-200">
             <div className="flex flex-col h-full justify-between">
               <div>
@@ -132,12 +134,18 @@ const Footer = () => (
 );
 
 export default function Home() {
+  const [jobs, setJobs] = useState<Job[]>([]);
+
+  useEffect(() => {
+    fetchJobs().then(setJobs);
+  }, []);
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow">
         <HeroSection />
-        <FeaturedJobs />
+        <FeaturedJobs jobs={jobs} />
         <Features />
       </main>
       <Footer />

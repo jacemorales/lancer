@@ -1,52 +1,48 @@
-# WorkPlug - Freelance Marketplace
+# WorkPlug - Powering Your Hustle
 
-This project is a full-stack freelance marketplace built with Next.js (Frontend) and NestJS (Backend).
+WorkPlug is a dedicated platform for **students** to kickstart their careers. Our mission is to **end unemployment in Africa within the next 10 years** by connecting students with global opportunities.
 
-## Deployment Guide
+## 🚀 Deployment Guide
 
-To see the project running "perfectly online," follow these steps to deploy the separate components.
+This guide explains how to get WorkPlug running online with a Google Sheets "database."
 
-### 1. Database Setup
+### 1. Database Setup (Google Sheets)
 
-The project uses PostgreSQL with Prisma ORM.
+For testing UI flow without a complex backend, you can use Google Sheets as your database.
 
-1.  **Provider:** Sign up for a managed PostgreSQL service like [Neon](https://neon.tech/) or [Render PostgreSQL](https://render.com/docs/databases).
-2.  **Connection String:** Create a new database and copy the connection string (e.g., `postgresql://user:password@host/dbname?sslmode=require`).
+1.  **Create a Spreadsheet:** Create a new Google Sheet.
+2.  **Add Headers:** Add the following headers to the first row:
+    `id`, `title`, `description`, `skills`, `budgetType`, `budget`, `postedDate`, `clientName`, `clientLocation`, `clientRating`, `clientReviews`
+3.  **Add Demo Data:** Copy these rows into your sheet:
+    ```csv
+    1,Senior Frontend Student,Build a React dashboard,React;Next.js,hourly,25,2024-09-26,TechCorp,Lagos; Nigeria,4.9,12
+    2,Python Scripting for Research,Automate data collection,Python;Selenium,fixed,200,2024-09-25,EduResearch,Nairobi; Kenya,4.8,5
+    3,Social Media Graphics,Design 10 Instagram posts,Canva;Figma,fixed,150,2024-09-24,StyleHub,Remote,5.0,20
+    ```
+    *(Note: Use semicolons `;` to separate skills and locations to avoid CSV parsing errors).*
+4.  **Publish to Web:**
+    - In Google Sheets, go to `File > Share > Publish to web`.
+    - Select `Entire Document` and `Comma-separated values (.csv)`.
+    - Click `Publish` and copy the generated URL.
 
-### 2. Backend API (NestJS)
-
-Deploy the backend to a platform like [Render](https://render.com/) or [Railway](https://railway.app/).
-
-1.  **Repository Settings:** Point the deployment to the `lancer/api` directory.
-2.  **Build Command:** `npm install && npm run build`
-3.  **Start Command:** `npm run start:prod`
-4.  **Environment Variables:**
-    *   `DATABASE_URL`: Your PostgreSQL connection string.
-    *   `JWT_SECRET`: A long, random string for authentication.
-    *   `PORT`: `3001` (or your preferred port).
-
-### 3. Frontend Web Application (Next.js)
+### 2. Frontend Web Application (Next.js)
 
 Deploy the frontend to [Netlify](https://www.netlify.com/).
 
-1.  **Netlify Configuration:** A `netlify.toml` file is in the root of the repository. It automatically configures:
-    *   **Base directory:** `lancer/web`
-    *   **Build command:** `npm run build`
-    *   **Publish directory:** `out`
-2.  **Static Export:** The project is configured for **Static HTML Export**. This ensures that Tailwind CSS is correctly compiled and all files are linked to the appropriate URLs.
-3.  **Styling:** Tailwind CSS is used for styling. Ensure `postcss.config.js` is present (already added) for Tailwind to process correctly during the build.
-4.  **Environment Variables:**
-    *   `NEXT_PUBLIC_API_URL`: The URL of your deployed Backend API.
+1.  **Netlify Configuration:** A `netlify.toml` file is in the root of the repository. It automatically handles the build settings.
+2.  **Environment Variables:**
+    - Set `NEXT_PUBLIC_GOOGLE_SHEET_URL` to the **CSV URL** you copied from Google Sheets.
+3.  **Build Command:** `npm run build`
+4.  **Publish Directory:** `out`
 
-### 4. How They Connect
+### 3. How It Works
 
-Once both are deployed:
-1.  The **Frontend** communicates with the **Backend** via the `NEXT_PUBLIC_API_URL`.
-2.  The **Backend** communicates with the **Database** via the `DATABASE_URL`.
-3.  **Routing:** The `_redirects` file handles client-side routing, ensuring that refreshing the page doesn't result in a 404 by redirecting all requests to the main `index.html`.
+- The site fetches data directly from your Google Sheet CSV URL using the `fetch` API.
+- Client-side routing is handled by Netlify using the `_redirects` file.
+- No backend server is required for this UI-only flow!
 
-## Local Development
+## 💻 Local Development
 
-1.  **Database:** Ensure Docker is running and use `docker-compose up` in the `lancer/` directory.
-2.  **Backend:** `cd lancer/api && npm install && npm run start:dev`
-3.  **Frontend:** `cd lancer/web && npm install && npm run dev`
+1.  **Setup:** `cd lancer/web && npm install`
+2.  **Run:** `npm run dev`
+3.  **Env:** Create a `.env.local` in `lancer/web` and add `NEXT_PUBLIC_GOOGLE_SHEET_URL=your_csv_url`.
